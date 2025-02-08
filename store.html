@@ -6,7 +6,7 @@
     <title>Store Definition</title>
 </head>
 <body>
-    <h2>Add a New Definition</h2>
+    <h1>Store a New Word Definition</h1>
     <form id="storeForm">
         <label for="word">Word:</label>
         <br>
@@ -28,7 +28,7 @@
             const responseMessage = document.getElementById('responseMessage');
 
             if (!/^[a-zA-Z]+$/.test(word)) {
-                responseMessage.textContent = "Error: Word must contain only letters.";
+                responseMessage.textContent = "Invalid input";
                 return;
             }
 
@@ -39,7 +39,7 @@
             });
 
             const data = await response.json();
-            responseMessage.textContent = data.message;
+            responseMessage.textContent = data.message || data.error;
         });
     </script>
 </body>

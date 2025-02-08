@@ -1,5 +1,6 @@
 const http = require("http");
 const url = require("url");
+const messages = require("./lang/messages/en/user");
 
 const PORT = process.env.PORT || 3000;
 let dictionary = [];
@@ -8,7 +9,7 @@ let requestCount = 0;
 const server = http.createServer((req, res) => {
     requestCount++;
     const parsedUrl = url.parse(req.url, true);
-    
+
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Content-Type", "application/json");
 
@@ -19,24 +20,45 @@ const server = http.createServer((req, res) => {
 
     if (req.method === "POST" && parsedUrl.pathname === "/api/definitions") {
         let body = "";
-        req.on("data", chunk => body += chunk);
+        req.on("data", chunk => (body += chunk));
         req.on("end", () => {
             const { word, definition } = JSON.parse(body || "{}");
+
             if (!word || !definition || /\d/.test(word)) {
-                return res.end(JSON.stringify({ error: "Invalid input" }));
+                return res.end(JSON.stringify({ error: messages.InvalidInput }));
             }
+
             if (dictionary.some(entry => entry.word.toLowerCase() === word.toLowerCase())) {
-                return res.end(JSON.stringify({ message: `'${word}' already exists`, requestCount, totalEntries: dictionary.length }));
+                return res.end(
+                    JSON.stringify({
+                        message: messages.ExistingWord.replace("%1", word),
+                        requestCount,
+                        totalEntries: dictionary.length
+                    })
+                );
             }
+
             dictionary.push({ word, definition });
-            res.end(JSON.stringify({ message: `Added: ${word}`, requestCount, totalEntries: dictionary.length }));
+            res.end(
+                JSON.stringify({
+                    message: messages.AddedWord.replace("%1", word),
+                    requestCount,
+                    totalEntries: dictionary.length
+                })
+            );
         });
     } 
-    
+
     else if (req.method === "GET" && parsedUrl.pathname === "/api/definitions") {
         const word = parsedUrl.query.word;
         const entry = dictionary.find(e => e.word.toLowerCase() === word?.toLowerCase());
-        res.end(JSON.stringify(entry ? { word: entry.word, definition: entry.definition, requestCount } : { message: `Word '${word}' not found`, requestCount }));
+        res.end(
+            JSON.stringify(
+                entry
+                    ? { word: entry.word, definition: entry.definition, requestCount }
+                    : { message: messages.WordNotFound.replace("%1", word), requestCount }
+            )
+        );
     } 
     
     else {

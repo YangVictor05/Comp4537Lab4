@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Definition</title>
+    <title>Search Dictionary</title>
 </head>
 <body>
-    <h2>Search for a Definition</h2>
+    <h1>Search for a Word Definition</h1>
     <form id="searchForm">
-        <label for="searchWord">Word:</label>
+        <label for="searchWord">Enter a Word:</label>
         <input type="text" id="searchWord" required>
         <button type="submit">Search</button>
     </form>
@@ -21,18 +21,16 @@
             const searchResult = document.getElementById('searchResult');
 
             if (!/^[a-zA-Z]+$/.test(searchWord)) {
-                searchResult.textContent = "Error: Word must contain only letters.";
+                searchResult.textContent = "Invalid input";
                 return;
             }
 
             const response = await fetch(`https://yourDomainName2.wyz/api/definitions/?word=${searchWord}`);
             const data = await response.json();
 
-            if (response.ok) {
-                searchResult.textContent = `Definition: ${data.definition} (Request #${data.requestNumber})`;
-            } else {
-                searchResult.textContent = `Request #${data.requestNumber}, word '${searchWord}' not found!`;
-            }
+            searchResult.textContent = data.word
+                ? `Definition: ${data.definition} (Request #${data.requestCount})`
+                : data.message;
         });
     </script>
 </body>

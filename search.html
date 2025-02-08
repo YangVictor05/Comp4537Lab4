@@ -19,15 +19,14 @@
             event.preventDefault();
             const searchWord = document.getElementById('searchWord').value.trim();
             const searchResult = document.getElementById('searchResult');
-
             if (!/^[a-zA-Z]+$/.test(searchWord)) {
                 searchResult.textContent = "Invalid input";
                 return;
             }
-            const apiUrl = `https://seal-app-6trmv.ondigitalocean.app/api/definitions/?word=${searchWord}`;
+            const apiUrl = `https://seal-app-6trmv.ondigitalocean.app/api/definitions?word=${searchWord}`;
             const response = await fetch(apiUrl);
             const data = await response.json();
-
+            
             searchResult.textContent = data.word
                 ? `Definition: ${data.definition} (Request #${data.requestCount})`
                 : data.message;

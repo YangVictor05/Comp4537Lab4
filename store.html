@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Definition</title>
+</head>
+<body>
+    <h2>Add a New Definition</h2>
+    <form id="storeForm">
+        <label for="word">Word:</label>
+        <br>
+        <input type="text" id="word" required>
+        <br><br>
+        <label for="definition">Definition:</label>
+        <br>
+        <textarea id="definition" required></textarea>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+    <p id="responseMessage"></p>
+
+    <script>
+        document.getElementById('storeForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const word = document.getElementById('word').value.trim();
+            const definition = document.getElementById('definition').value.trim();
+            const responseMessage = document.getElementById('responseMessage');
+
+            if (!/^[a-zA-Z]+$/.test(word)) {
+                responseMessage.textContent = "Error: Word must contain only letters.";
+                return;
+            }
+
+            const response = await fetch('https://yourDomainName2.wyz/api/definitions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ word, definition })
+            });
+
+            const data = await response.json();
+            responseMessage.textContent = data.message;
+        });
+    </script>
+</body>
+</html>

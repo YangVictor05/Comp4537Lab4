@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Definition</title>
+</head>
+<body>
+    <h2>Search for a Definition</h2>
+    <form id="searchForm">
+        <label for="searchWord">Word:</label>
+        <input type="text" id="searchWord" required>
+        <button type="submit">Search</button>
+    </form>
+    <p id="searchResult"></p>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const searchWord = document.getElementById('searchWord').value.trim();
+            const searchResult = document.getElementById('searchResult');
+
+            if (!/^[a-zA-Z]+$/.test(searchWord)) {
+                searchResult.textContent = "Error: Word must contain only letters.";
+                return;
+            }
+
+            const response = await fetch(`https://yourDomainName2.wyz/api/definitions/?word=${searchWord}`);
+            const data = await response.json();
+
+            if (response.ok) {
+                searchResult.textContent = `Definition: ${data.definition} (Request #${data.requestNumber})`;
+            } else {
+                searchResult.textContent = `Request #${data.requestNumber}, word '${searchWord}' not found!`;
+            }
+        });
+    </script>
+</body>
+</html>

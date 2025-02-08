@@ -53,8 +53,10 @@ const server = http.createServer((req, res) => {
 
     else if (req.method === "GET" && parsedUrl.pathname === "/api/definitions") {
         const word = parsedUrl.query.word;
+        console.log(word);
+        console.log(dictionary);
         const entry = dictionary.find(e => e.word.toLowerCase() === word?.toLowerCase());
-        res.end(
+\        res.end(
             JSON.stringify(
                 entry
                     ? { word: entry.word, definition: entry.definition, requestCount }

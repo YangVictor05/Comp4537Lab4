@@ -1,6 +1,6 @@
 const http = require("http");
 const url = require("url");
-const messages = require("./lang/messages/en/user.js");
+const messages = require("../lang/messages/en/user.js");
 
 const PORT = process.env.PORT || 3000;
 let dictionary = [];

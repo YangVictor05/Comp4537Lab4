@@ -46,8 +46,8 @@ const server = http.createServer((req, res) => {
 
             res.end(
                 JSON.stringify({
-                    message: messages.AddedWord.replace("%1", word) + " " + messages.TotalEntries.replace("%1", totalEntries),
-                    requestCount,
+                    message: messages.AddedWord.replace("%1", word) + " " + messages.TotalEntries.replace("%1", totalEntries)
+                    + " " + messages.RequestCount.replace("%1", requestCount),
                 })
             );
         });

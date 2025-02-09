@@ -15,18 +15,29 @@
     <p id="searchResult"></p>
 
     <script>
-        document.getElementById('searchForm').addEventListener('submit', async function(event) {
+        let messages = {};
+
+        async function loadMessages() {
+            const response = await fetch("https://seal-app-6trmv.ondigitalocean.app/api/messages");
+            messages = await response.json();
+        }
+
+        document.addEventListener("DOMContentLoaded", loadMessages);
+
+        document.getElementById("searchForm").addEventListener("submit", async function(event) {
             event.preventDefault();
-            const searchWord = document.getElementById('searchWord').value.trim();
-            const searchResult = document.getElementById('searchResult');
+            const searchWord = document.getElementById("searchWord").value.trim();
+            const searchResult = document.getElementById("searchResult");
+
             if (!/^[a-zA-Z]+$/.test(searchWord)) {
-                searchResult.textContent = "Invalid input";
+                searchResult.textContent = messages.InvalidInput || "Invalid input";
                 return;
             }
+
             const apiUrl = `https://seal-app-6trmv.ondigitalocean.app/api/definitions?word=${searchWord}`;
             const response = await fetch(apiUrl);
             const data = await response.json();
-            
+
             searchResult.textContent = data.word
                 ? `Definition: ${data.definition} (Request #${data.requestCount})`
                 : data.message;

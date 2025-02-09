@@ -20,10 +20,6 @@ const server = http.createServer((req, res) => {
         return res.end();
     }
 
-    if (req.method === "GET" && parsedUrl.pathname === "/api/messages") {
-        return res.end(JSON.stringify(messages));
-    }
-
     if (req.method === "POST" && parsedUrl.pathname === "/api/definitions") {
         let body = "";
         req.on("data", chunk => (body += chunk));
@@ -54,9 +50,11 @@ const server = http.createServer((req, res) => {
             );
         });
     } 
-    
+
     else if (req.method === "GET" && parsedUrl.pathname === "/api/definitions") {
         const word = parsedUrl.query.word;
+        console.log(word);
+        console.log(dictionary);
         const entry = dictionary.find(e => e.word.toLowerCase() === word?.toLowerCase());
         res.end(
             JSON.stringify(
@@ -73,4 +71,4 @@ const server = http.createServer((req, res) => {
     }
 });
 
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(PORT, () => console.log(Server running on port ${PORT}));

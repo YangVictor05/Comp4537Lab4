@@ -1,3 +1,4 @@
+// app.js created with the assistance of ChatGPT
 const http = require("http");
 const url = require("url");
 const messages = require("../lang/messages/en/user.js");
@@ -41,11 +42,12 @@ const server = http.createServer((req, res) => {
             }
 
             dictionary.push({ word, definition });
+            const totalEntries = dictionary.length;
+
             res.end(
                 JSON.stringify({
-                    message: messages.AddedWord.replace("%1", word),
+                    message: messages.AddedWord.replace("%1", word) + " " + messages.TotalEntries.replace("%1", totalEntries),
                     requestCount,
-                    totalEntries: dictionary.length
                 })
             );
         });

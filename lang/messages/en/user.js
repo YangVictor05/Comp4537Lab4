@@ -12,6 +12,7 @@ const messages = {
     Word: "Word",
     Definition: "Definition",
     Submit: "Submit",
+    NotFound: "Not found",
 };
 
 module.exports = messages;

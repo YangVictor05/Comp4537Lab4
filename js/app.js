@@ -69,7 +69,7 @@ const server = http.createServer((req, res) => {
     
     else {
         res.writeHead(404);
-        res.end(JSON.stringify({ error: "Not found" }));
+        res.end(JSON.stringify({ error: messages.NotFound }));
     }
 });
 
